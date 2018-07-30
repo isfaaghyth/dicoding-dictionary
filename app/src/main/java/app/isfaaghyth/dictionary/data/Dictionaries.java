@@ -11,6 +11,7 @@ import app.isfaaghyth.dictionary.data.repository.Words;
 
 public interface Dictionaries {
     void bulkInsert(boolean isIndonesia, List<Words> words);
-    List<Words> getAll();
+    List<Words> getAll(boolean isIndonesia);
     List<Words> getByWord(boolean isIndonesia, String query);
+    List<Words> doQueries(String query);
 }

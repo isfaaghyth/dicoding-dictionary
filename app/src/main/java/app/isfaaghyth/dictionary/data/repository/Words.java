@@ -23,40 +23,38 @@ public class Words {
         return means;
     }
 
-    private void setId(int id) {
-        this.id = id;
+    private Words(Builder builder) {
+        id = builder.id;
+        words = builder.words;
+        means = builder.means;
     }
 
-    private void setWords(String words) {
-        this.words = words;
-    }
-
-    private void setMeans(String means) {
-        this.means = means;
-    }
-
-    public static class Builder {
-
-        private Words words;
+    public static final class Builder {
+        private int id;
+        private String words;
+        private String means;
 
         public Builder() {
-            words = new Words();
         }
 
-        public Builder setId(int id) {
-            words.setId(id);
+        public Builder setId(int val) {
+            id = val;
             return this;
         }
 
-        public Builder setWords(String word) {
-            words.setWords(word);
+        public Builder setWords(String val) {
+            words = val;
             return this;
         }
 
-        public Builder setMeans(String means) {
-            words.setMeans(means);
+        public Builder setMeans(String val) {
+            means = val;
             return this;
         }
 
+        public Words build() {
+            return new Words(this);
+        }
     }
+
 }

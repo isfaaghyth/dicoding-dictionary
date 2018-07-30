@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class DictionaryManager implements Dictionaries {
         beginTransaction();
         SQLiteStatement statement = database.compileStatement(DatabaseContract.insertData(currentTable));
         for (Words word: words) {
+            Log.d("TAG", word.getWords());
             statement.bindString(1, word.getWords());
             statement.bindString(2, word.getMeans());
             statement.execute();

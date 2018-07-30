@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private void initSearchView() {
         searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
             @Override public void onSearchTextChanged(String oldQuery, String newQuery) {
-                Toast.makeText(MainActivity.this, oldQuery + "\n" + newQuery, Toast.LENGTH_LONG).show();
+
             }
         });
     }

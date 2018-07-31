@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dictionary</string>
+    <string name="id_to_eng">Indonesia to English</string>
+    <string name="eng_to_id">English to Indonesia</string>
 </resources>

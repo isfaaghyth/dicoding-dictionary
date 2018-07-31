@@ -3,6 +3,7 @@ package app.isfaaghyth.dictionary.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class BulkEntriesHelper extends AsyncTask<Void, Integer, Void> {
     }
 
     @Override protected Void doInBackground(Void... params) {
+        dictionary.open();
         List<Words> indonesiaLang = rawLoader.load(R.raw.indonesia_english);
         List<Words> englishLang = rawLoader.load(R.raw.english_indonesia);
         dictionary.bulkInsert(true, indonesiaLang);

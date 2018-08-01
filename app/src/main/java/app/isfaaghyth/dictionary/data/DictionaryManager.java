@@ -64,7 +64,6 @@ public class DictionaryManager implements Dictionaries {
         beginTransaction();
         SQLiteStatement statement = database.compileStatement(DatabaseContract.insertData(currentTable));
         for (Words word: words) {
-            Log.d("TAG", word.getWords());
             statement.bindString(1, word.getWords());
             statement.bindString(2, word.getMeans());
             statement.execute();

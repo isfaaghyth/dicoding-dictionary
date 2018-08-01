@@ -20,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        if (!Rak.isExist("init")) {
+        if (!Rak.isExist("init") || !(Boolean) Rak.grab("init")) {
             new BulkEntriesHelper(this).execute();
         } else {
             new Handler().postDelayed(new Runnable() {
@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }
-            }, 1500);
+            }, 2000);
         }
     }
 

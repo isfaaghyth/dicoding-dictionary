@@ -33,29 +33,29 @@ public class DictionaryManager implements Dictionaries {
         this.context = context;
     }
 
-    public DictionaryManager open() {
+    @Override public DictionaryManager open() {
         dbHelper = new DataHelper(context);
         database = dbHelper.getWritableDatabase();
         return this;
     }
 
-    public void close() {
+    @Override public void close() {
         dbHelper.close();
     }
 
-    public SQLiteDatabase getDatabase() {
+    private SQLiteDatabase getDatabase() {
         return database;
     }
 
-    public void beginTransaction(){
+    private void beginTransaction(){
         database.beginTransaction();
     }
 
-    public void setTransactionSuccess(){
+    private void setTransactionSuccess(){
         database.setTransactionSuccessful();
     }
 
-    public void endTransaction(){
+    private void endTransaction(){
         database.endTransaction();
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.List;
 
 import app.isfaaghyth.dictionary.R;
+import app.isfaaghyth.dictionary.data.Dictionaries;
 import app.isfaaghyth.dictionary.data.DictionaryManager;
 import app.isfaaghyth.dictionary.data.repository.Words;
 import app.isfaaghyth.dictionary.ui.MainActivity;
@@ -20,7 +21,7 @@ import io.isfaaghyth.rak.Rak;
 
 public class BulkEntriesHelper extends AsyncTask<Void, Integer, Void> {
 
-    private DictionaryManager dictionary;
+    private Dictionaries dictionary;
     private RawLoader rawLoader;
 
     private Activity activity;

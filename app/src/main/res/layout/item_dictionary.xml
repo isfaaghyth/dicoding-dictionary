@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?selectableItemBackground"
@@ -19,16 +19,16 @@
             android:layout_width="40dp"
             android:layout_height="40dp">
 
-            <View
+            <app.isfaaghyth.dictionary.util.CircleView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/circle"/>
+                android:layout_height="match_parent"/>
 
             <TextView
+                android:id="@+id/txt_first_letter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:text="T"
+                android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:layout_gravity="center"/>
 
@@ -41,7 +41,7 @@
             android:layout_marginStart="20dp">
 
             <TextView
-                android:id="@+id/txt_title"
+                android:id="@+id/txt_word"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -49,15 +49,22 @@
                 android:text="test"/>
 
             <TextView
-                android:id="@+id/txt_excerpt"
+                android:id="@+id/txt_mean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:lines="1"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="test"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.7dp"
+        android:background="@color/colorDivide"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

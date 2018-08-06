@@ -1,39 +1,33 @@
 package app.isfaaghyth.dictionary.ui;
 
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.arlib.floatingsearchview.FloatingSearchView;
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.isfaaghyth.dictionary.R;
-import app.isfaaghyth.dictionary.adapter.ListAdapter;
+import app.isfaaghyth.dictionary.adapter.WordAdapter;
 import app.isfaaghyth.dictionary.data.Dictionaries;
 import app.isfaaghyth.dictionary.data.DictionaryManager;
-import app.isfaaghyth.dictionary.data.repository.Suggestions;
 import app.isfaaghyth.dictionary.data.repository.Words;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    //@BindView(R.id.search_view) FloatingSearchView searchView;
+    @BindView(R.id.lst_dictionary) FastScrollRecyclerView lstDictionary;
 
-    private FloatingSearchView searchView;
-
+    private LinearLayoutManager layoutManager;
+    private WordAdapter adapter;
+    private List<Words> words;
     private Dictionaries dictionaryManager;
-    private List<Suggestions> suggestionses = new ArrayList<>();
-
     private boolean isIndonesia = true;
 
     @Override
@@ -41,13 +35,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         dictionaryManager = new DictionaryManager(this);
         dictionaryManager.open();
 
-        //storeSuggestions();
-        //initSearchView();
-        //setupSearchViewPosition();
+        words = dictionaryManager.getAll(isIndonesia);
+
+        layoutManager = new LinearLayoutManager(this);
+        lstDictionary.setLayoutManager(layoutManager);
+
+        adapter = new WordAdapter(words);
+        lstDictionary.setAdapter(adapter);
     }
 
     @Override protected void onDestroy() {
@@ -55,65 +52,48 @@ public class MainActivity extends AppCompatActivity {
         dictionaryManager.close();
     }
 
-    private void storeSuggestions() {
-        suggestionses.clear();
-        for (Words words: dictionaryManager.getAll(isIndonesia)) {
-            suggestionses.add(new Suggestions(words.getWords()));
-        }
-    }
 
-    private void initSearchView() {
-        searchView.setOnQueryChangeListener(new FloatingSearchView.OnQueryChangeListener() {
-            @Override public void onSearchTextChanged(String oldQuery, String newQuery) {
-                if (!oldQuery.isEmpty() && newQuery.isEmpty()) {
-                    searchView.clearSuggestions();
-                } else {
-                    searchView.showProgress();
-                    searchView.swapSuggestions(findWord(newQuery));
-                    searchView.hideProgress();
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+
+        SearchView searchMovieView = (SearchView) menu.findItem(R.id.mn_search).getActionView();
+        searchMovieView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override public boolean onQueryTextSubmit(String query) {
+                words.clear();
+                words.addAll(dictionaryManager.getByWord(isIndonesia, query));
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+            @Override public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    getDefaultData();
                 }
+                return false;
             }
         });
-        searchView.setOnSearchListener(new FloatingSearchView.OnSearchListener() {
-            @Override public void onSuggestionClicked(SearchSuggestion item) {
-                Suggestions suggestion = (Suggestions) item;
-                String means = dictionaryManager.getByWord(isIndonesia, suggestion.getBody()).get(0).getMeans();
-                Toast.makeText(getApplicationContext(), means, Toast.LENGTH_LONG).show();
-            }
-            @Override public void onSearchAction(String query) {}
-        });
-        searchView.setOnMenuItemClickListener(new FloatingSearchView.OnMenuItemClickListener() {
-            @Override public void onActionMenuItemSelected(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.mn_english:
-                        isIndonesia = false;
-                        break;
-                    case R.id.mn_indonesia:
-                        isIndonesia = true;
-                        break;
-                    default:
-                        isIndonesia = true;
-                }
-                storeSuggestions();
-            }
-        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
-    private void setupSearchViewPosition() {
-        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-        int height = displayMetrics.heightPixels;
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchView.getLayoutParams();
-        params.topMargin = ((height * 30) / 100);
-        searchView.setLayoutParams(params);
-    }
-
-    private List<Suggestions> findWord(String query) {
-        List<Suggestions> temp = new ArrayList<>();
-        for (Suggestions suggestion: suggestionses) {
-            if (suggestion.getBody().toLowerCase().contains(query)) {
-                temp.add(suggestion);
-            }
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.mn_english:
+                isIndonesia = false;
+                break;
+            case R.id.mn_indonesia:
+                isIndonesia = true;
+                break;
+            default:
+                isIndonesia = true;
         }
-        return temp;
+        getDefaultData();
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getDefaultData() {
+        words.clear();
+        words.addAll(dictionaryManager.getAll(isIndonesia));
+        adapter.notifyDataSetChanged();
     }
 }

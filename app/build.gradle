@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //design
-    compile 'com.github.arimorty:floatingsearchview:2.1.1'
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.5'
 
     //databinding
     compile 'com.jakewharton:butterknife:8.8.1'
